@@ -16,6 +16,7 @@ class Volleyball {
     void printQuestion() const;
     bool isCorrect();
     void swapPlayer();
+    void showResults(bool);
     int playGame();
 public:
     Volleyball(std::vector<std::vector<std::string>> &questions);
