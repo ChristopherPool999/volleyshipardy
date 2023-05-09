@@ -29,16 +29,17 @@ void Volleyball::findQuestion() {
 
 void Volleyball::printQuestion() const {
     printw("Player %d, I Want To Play A Game\n\nPick the correct question or else... (use 1, 2, 3, 4)\n"
-        "%s\n\n%s\n%s\n%s\n%s\n",
+        "%s\n\n%s\n%s\n%s\n%s\nTimer: %f\n\n",
         player,
         questions[questionNum][0].c_str(),
         questions[questionNum][1].c_str(),
         questions[questionNum][2].c_str(),
         questions[questionNum][3].c_str(),
-        questions[questionNum][4].c_str());
+        questions[questionNum][4].c_str(),
+        timeLimit.count());
 }
 
-bool Volleyball::isCorrect() {
+std::pair<bool, double> Volleyball::getResults() {
 	auto start = std::chrono::high_resolution_clock::now();
     
     // auto updateTimer = [&start](durationDBL limit, durationDBL &curr, durationDBL &start) -> void {
@@ -69,18 +70,22 @@ bool Volleyball::isCorrect() {
     // }
     int choice = getch() - '0';
 	auto end = std::chrono::high_resolution_clock::now();
-    timeLimit = std::chrono::duration_cast<durationDBL>(timeLimit - (end - start));
-    return timeLimit.count() > 0 && questions[questionNum][choice] == answer;
+    auto temp = timeLimit;
+    timeLimit = std::chrono::duration_cast<durationDBL>(end - start);
+    if (choice < 0 || choice > 4 || timeLimit.count() >= temp.count() || questions[questionNum][choice] != answer) {
+        return std::make_pair(0, temp.count() - timeLimit.count());
+    }
+    return std::make_pair(1, temp.count() - timeLimit.count());
 }
 
 void Volleyball::swapPlayer() {
 	player = (player == 2 ? 1 : 2);
 }
 
-void Volleyball::showResults(bool isCorrect) {
-    std::string result = (isCorrect ? "correct :)" : "incorrect :(");
-    std::string timeLeft = std::to_string(timeLimit.count());
-    printw("You chose %s. The correct answer was %s\nTime Left: %s\n", result.c_str(), answer.c_str(), timeLeft.c_str());
+void Volleyball::showResults(std::pair<bool, double> &results) {
+    std::string faceEmoji = (results.first ? "correct :)" : "incorrect :(");
+    printw("You chose %s. The correct answer was %s\nwith a time left of... : %s\n\n",
+            faceEmoji.c_str(), answer.c_str(), std::to_string(results.second).c_str());
     refresh();
     std::this_thread::sleep_for(std::chrono::seconds(2));
 }
@@ -98,15 +103,15 @@ int Volleyball::playGame() {
 	while (true) {
 		findQuestion();
         printQuestion();
-		if (!isCorrect()) {
-            showResults(false);
-    		clear();
-    		endwin();
+        std::pair<bool, double> results = getResults();
+        showResults(results);
+		if (!results.first) {
+    		// clear();
+    		// endwin();
 			return (player == 2 ? 1 : 2);
 		}
 		swapPlayer();
-        showResults(true);
-        clear();
+        // clear();
     }
 	return 0;
 }
