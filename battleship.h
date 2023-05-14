@@ -18,7 +18,14 @@
 #define S      115
 #define D      100
 
-#define ship = X
+#define ship 'X'
+
+#define WATER 1
+#define SHIP 2
+#define SUNK_SHIP 3
+#define PLACE_SHIP_OK 4
+#define PLACE_SHIP_BAD 5
+#define NORMAL 6
 
 class Battleship {
     std::vector<std::vector<char>> grid1;
@@ -28,7 +35,7 @@ class Battleship {
     int player2Pieces = player1Pieces;
     std::pair<int, int> cursorPostion = {1, 1};
     int direction = RIGHT;
-    std::vector<std::pair<int, int>> getValidTiles(int);
+    std::vector<std::pair<int, int>> getValidTiles();
 public:
     Battleship();
     void printUI(int) const;

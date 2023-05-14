@@ -1,29 +1,30 @@
 #include "battleship.h"
 
 Battleship::Battleship() {
-    grid1 = std::vector<std::vector<char>> (row + 1, std::vector<char>(col + 1, '~')); 
+    grid1 = std::vector<std::vector<char>> (row + 1, std::vector<char>(col + 1, ' ')); 
 }
 
 std::string Battleship::getTileOutput(int tileX, int tileY) const {
-    int length = shipSizes[currentShip];
+    int length = shipSizes[currentShip] - 1;
     int cursorX = cursorPostion.first;
     int cursorY = cursorPostion.second;
 
+    std::string output = std::string(1, ship) + "  "; 
     if (direction == RIGHT && cursorY == tileY) {
          if (tileX >= cursorX && tileX <= cursorX + length) {
-            return "  ";
+            return output;
          }
     } else if (direction == LEFT && cursorY == tileY) {
          if (tileX >= cursorX - length && tileX <= cursorX) {
-            return "X  ";
+            return output;
          }
     } else if (direction == UP && cursorX == tileX) {
          if (tileY >= cursorY - length && tileY <= cursorY) {
-            return "X  ";
+            return output;
          }   
     } else if (direction == DOWN && cursorX == tileX) {
          if (tileY >= cursorY && tileY <= cursorY + length ) {
-            return "X  ";
+            return output;
          }  
     }
     std::string text = "";
@@ -51,7 +52,13 @@ void Battleship::printUI(int player) const {
         for (int x = 0; x < col; x++) {
             text += getTileOutput(x, y);
         }
-        printw("%s", (text += '\n').c_str());
+        if (text[0] != 'X') {
+            attrset(COLOR_PAIR(WATER));
+            printw("%s", (text += '\n').c_str());
+            attrset(COLOR_PAIR(NORMAL));
+        } else {
+            printw("%s", (text += '\n').c_str());
+        }
     }
 }
 
@@ -60,35 +67,53 @@ void Battleship::attack() {
 }
 
 void Battleship::handleMovement(int KEY) {
-    if (KEY == A && cursorPostion.first > 0) {
+    if (KEY == A && cursorPostion.first > 0 
+            && (direction != LEFT || cursorPostion.first + 1 > shipSizes[currentShip])) {
         cursorPostion.first--;
-    } else if (KEY == D && cursorPostion.first < col - 1) {
+    } else if (KEY == D && cursorPostion.first < col - 1
+            && (direction != RIGHT || cursorPostion.first + shipSizes[currentShip] < col)) {
          cursorPostion.first++;
-    } else if (KEY == S && cursorPostion.second < row - 1) {
+    } else if (KEY == S && cursorPostion.second < row - 1
+            && (direction != DOWN || cursorPostion.second + shipSizes[currentShip] < row)) {
         cursorPostion.second++;
-    } else if (KEY == W && cursorPostion.second > 0) {
+    } else if (KEY == W && cursorPostion.second > 0
+            && (direction != UP || cursorPostion.second + 1 > shipSizes[currentShip])) {
         cursorPostion.second--;
     }
 }
 
 void Battleship::handleDirection(int KEY) {
-    if (KEY == RIGHT) {
-        if ()
-    } else if (KEY == LEFT) {
-        
-    } else if (KEY == DOWN) {
-        
-    } else if (KEY == UP) {
-        
+    if (KEY == RIGHT && cursorPostion.first < row + 1 - shipSizes[currentShip]) {
+        direction = RIGHT;
+    } else if (KEY == LEFT && cursorPostion.first + 2 > shipSizes[currentShip]) {
+        direction = LEFT;
+    } else if (KEY == DOWN && cursorPostion.second < col + 1 - shipSizes[currentShip]) {
+        direction = DOWN;
+    } else if (KEY == UP && cursorPostion.second + 2 > shipSizes[currentShip]) {
+        direction = UP;
     }
 }
 
-std::vector<std::pair<int, int>> Battleship::getValidTiles(int direction = 0) {
-    if (!direction) {
-        for (int i = 0; i < shipSizes[currentShip]; i++) {
-
+std::vector<std::pair<int, int>> Battleship::getValidTiles() {
+    std::vector<std::pair<int, int>> tiles;
+    for (int i = 0; i < shipSizes[currentShip]; i++) {
+        int y = cursorPostion.second;
+        int x = cursorPostion.first;
+        if (direction == UP) {
+            y -= i;
+        } else if (direction == RIGHT) {
+            x += i;
+        } else if (direction == LEFT) {
+            x -= i;
+        } else if (direction == DOWN) {
+            y += i;
         }
+        if (y > col || x > row || y < 0 || x < 0) {
+            break;
+        }
+        tiles.push_back({y, x});
     }
+    return tiles;
 }
 
 void Battleship::placeShips() {
@@ -101,14 +126,12 @@ void Battleship::placeShips() {
             handleMovement(KEY);
         } else if (KEY == LEFT || KEY == RIGHT || KEY == UP || KEY == DOWN) {
             handleDirection(KEY);
-        } else if (KEY == ENTER && getValidTiles().size() == shipSizes[currentShip]) {
+        } else if (KEY == ENTER && int(getValidTiles().size()) == shipSizes[currentShip]) {
             std::vector<std::pair<int, int>> tiles = getValidTiles();
             for (auto p : tiles) {
-                grid1[p.first][p.second] = 'X';               
+                grid1[p.first][p.second] = ship;               
             }
-            currentShip++;
-            
-            break;
+            currentShip++;            
         }
     }
 }
