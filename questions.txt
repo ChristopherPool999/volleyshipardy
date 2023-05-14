@@ -1,0 +1,563 @@
+in plain English, what is this line of code doing?\nfloat number = 3.5;\n
+It is making a variable named "number" of type "float" with a value of 3.5
+It is making a variable named "number" of type "int" with a value of 3.5
+It is making a variable of type "number" and also type "float" with a value of 3.5
+It is making a variable of type "number" named "float" with a value of 3.5
+
+I'm trying to read a value from the keyboard into a variable named x. What is wrong with this line of code:\ncin << x;\n
+It should be cin >> x; instead
+If you want to read from the keyboard you need to use cout, not cin
+You can't read from the keyboard in C++
+It is missing a semicolon at the end of the line
+
+A normal int has a range of approximately what values on our server?
+-2 billion to 2 billion
+0.0000001 to 2 billion
+-1x10^32 to 1x10^32
+-65,000 to 65,000
+
+What is this code snippet going to output?\nint x = 10;\nif (x < 10) cout<<"Cheese Wheel";\nelse if (x == 10) cout << "Naruto";\nelse if (x == 20) cout << "Pepe";\nelse cout << "Doge";\n
+Naruto
+Doge
+Pepe
+Cheese Wheel
+
+Which is the most accurate way of describing what string variables hold?
+0 or more characters (letters)
+2 or more words
+Scientific notation numbers
+Numbers from -2.1B to 2.1B
+
+If x is 20 and y is 30, what will this code output? (x and y are ints)\nif (x< 20 and y == 30) cout << "Apple";\nelse if (x == 20 and y < 30) cout <<"Banana";\nelse if (x > 10 and y < 40) cout << "Candy";\nelse cout <<"Doppleganger";\n
+Candy
+Doppleganger
+Apple
+Banana
+
+What is the command on the server to run the input tester to see how many test cases (and thus your grade) your homework is passing?
+input_tester
+ctrl-d
+cmatrix
+vim
+
+Whenever you get input from the user you should _____ it
+Vet
+Serve
+Eat
+Poke
+
+How do you erase all the characters in the input buffer in UNIX?\nLike, you've typed "dfsfdshgkfsdjhasfk" on the command line and you want to wipe them all out so you can type in something else.\n
+ctrl-u
+ctrl-d
+ctrl-e
+ctrl-l
+
+What does this code print?\nbool x = true;\nbool y = false;\nbool z = x &&!y;\ncout << z;\n
+1
+3
+2
+0
+
+How do you scroll up and down in your command history in UNIX?
+up arrow & down arrow
+q & e
+h & n
+w & a
+
+What is wrong with this code? It's supposed to print out "Hello World"vertically.\nstring s = "Hello World";\nfor (int i = 0; i < s.size() i++){\ncout << s.at(i) << endl;\n}\n
+Missing semicolon: ;
+There's nothing wrong with it
+Missing curly braces: {}
+Missing parentheses: ()
+
+Suppose you want to lowercaseify a string s as such: "AppLe" would become "apple".\nYou can do it like this:\nfor (int i = 0; i < s.size(); i++) s.at(i) = tolower(s.at(i));\nWhich one of the options down there does the same thing?\n
+for (char &c : s) c = tolower(c);
+for (int i = 0; i < s.size(); i++) s.at(i) = toupper(s.at(i));
+for (int i = 0; i < s.size(); i++) c = tolower(s.at(i));
+for (char c : s) c = tolower(c);
+
+If I wanted to do exponentiation in C++, like compute 10 to the 5th power, what standard library function should I call?
+pow
+sin
+abs
+exp
+
+What word or symbol is missing from this function? It is supposed to compute the absolute value of an integer. For example, if -10 is passed in it should return 10.\nripped_abs(int x) {\nif (x < 0) return -1 * x;\nreturn x;\n}\n
+int
+Missing semicolon: ;
+else
+Missing curly braces: {}
+
+Suppose I want to pass a string to a function which will return how many uppercase characters are in the string.\nWhat is the best way of passing the string to the function?\n 
+reference (string &s)
+const reference (const string &s)
+Other
+value (string s)
+
+Suppose I want to make a function called helloer that will take an int as a parameter and print "Hello World!" that many times.\nWhat is the best way to pass the int in?\n
+value (int x)
+Other
+const reference (const int &x)
+reference (int &x)
+
+What does this function do?\nvoid qq_ra_sz(int &pow_xr_nt, int &sap_tt_none){\npow_xr_nt = pow_xr_nt ^ sap_tt_none;\nsap_tt_none = pow_xr_nt ^ sap_tt_none;\npow_xr_nt = pow_xr_nt ^sap_tt_none;\n}\n
+Swaps two ints
+Computes and sets the exponential of two integers with each other
+Sets the values of the two parameters equal to the third root of the ecliptic plane
+Takes in two call by reference integers and sets them equal to the results of Householder's transformation
+
+What does this function do?\n//This function swaps two ints without needing a temporary variable\nvoid qq_ra_sz(int &pow_xr_nt, int &sap_tt_none) {\npow_xr_nt = pow_xr_nt ^ sap_tt_none;\nsap_tt_none = pow_xr_nt ^ sap_tt_none;\npow_xr_nt = pow_xr_nt ^ sap_tt_none;\n}\n
+Swaps two ints
+Takes in two call by reference integers and sets them equal to the results of Householder's transformation
+Sets the values of the two parameters equal to the third root of the ecliptic plane
+Computes and sets the exponential of two integers with each other
+
+If you want to type in Vim like in a normal word processor, which command must you type?
+i
+y
+ESC
+p
+
+What command in UNIX shows all the files and folders in your current directory?
+ls
+cd
+nethack
+exit
+
+What command takes you from insert mode to command mode in Vim?
+Escape
+ZZ
+cd
+i
+
+What command in UNIX lets you edit a text file?
+vim
+cd
+touch
+ls
+
+Which one of these lines of "The Magic", if you leave it out, will cause you to get stds all over your code?
+using namespace std;
+#include <iostream>
+int main() {
+}
+
+What is the type of x here?\nauto x = 5.0;\n
+double
+float
+string
+int
+
+What is wrong with this line of code?\nconst int MAX_POINTS;\n
+MAX_POINTS doesn't have a value set, this makes it pointless since as a const it can't be set later
+It should be int const MAX_POINTS; because east const is better than west const
+You can't/shouldn't have variable names in all caps, since it is like screaming at people
+It should be int const MAX_POINTS; because east const is better than west const
+
+What is wrong with this code?\ncout << boolalpha << (bool)isupper("Microsoft Flight Simulator Crashed Again");\n
+isupper takes a character, not a string
+(bool) isn't a valid way of casting from one type to another
+It is missing a matching parenthesis 
+The double quotes need to be single quotes, as in 'Microsoft Flight Simulator Crashed Again'
+
+What is the name of the command on the server that will test your program to see what score you will get on your homework assignment?
+input_tester
+reformat
+compile
+g++
+
+What input would cause this code to print LOTR?\nint x = 0;\ncin >> x;\nif(!cin) cout << "LOTR";\nelse if (x == 0) cout << "Code Geass";\nelse if (x == 42) cout << "Pac-Man the Animated Series"\nelse cout << "Sword Art Online"\n
+Sword Art Online
+0
+42
+63
+
+x and y are ints. x is 20, y is 42.\nWhich one of these lines of code will print "Joe Rogan" to the screen?\n
+if (x < 30 and y > 40) cout << "Joe Rogan";
+if (!(x >= 20)) cout << "Joe Rogan";
+if (x > 20 or y < 42) cout << "Joe Rogan";
+if (x != 20 or y != 42) cout << "Joe Rogan";
+
+What is this code doing? s is a string that is already initialized.\nint count = 0;\nfor (int i = 0; i < s.length(); i++)\nif (s.at(i) == 'C') count++;\n
+Counts the number of capital C's in s
+Counts the number of lowercase C's in s
+Outputs all the C's in the string s
+Adds the ASCII code of C into count s times
+
+What is this code doing? s is a string.\nint count = 0;\nfor (unsigned int i = 0; i < s.length(); i++) {\nif (isdigit(s.at(i))) count++;\n}\n
+It is counting how many digits are in s
+It is counting how many characters are in s
+It is outputting each letter in s to the screen
+Will not compile
+
+How many times will this loop run?\nwhile (true) {\nstring s;\ncin >> s;\nif (s == "DONE") break;\ncout << s;\n
+It will run until the user types "DONE"
+It will run until the user types "done" 
+Exactly 100 times
+Exactly 0 times
+
+What is the name of the function written by Kerney that will immediately (without blocking, i.e. without needing to hit the enter key) return a keystroke that is typed by the user? This is in his /public/colors.h header file which can be used to color text output and even draw images inside of a terminal window like PuTTY.
+quick_read()
+using hrc=chrono::high_resolution_clock;
+int ch = getch();
+cout << RED;
+
+What does the #include preprocessor directive do?
+It copies and pastes one file into another
+It turns on mouse support for Vim
+It defines a constant
+It makes sure you can't include a file multiple times
+
+What does the #define preprocessor directive do?
+It kinda sorta creates a constant by finding and replacing one thing with another
+It copies and pastes one file into another
+It makes sure you can't include a file multiple times
+It doesn't do anything
+
+What does this code do?\nvector<int> vec(1000);\nfor (size_t i = 0; i < vec.size(); i++) {\nvec.at(i) = 2*i;\n}\n
+Sets each element in vec to twice its index value
+Sets each element in vec to be a prime number
+Prints 2,4,6,8, etc. to the screen
+Prints all elements in vec
+
+What does this code do? vec is a vector of some type already defined.\nfor (auto s : vec) cout << s << endl;\n
+Prints every element in vec to the screen
+It will run into an infinite loop
+Sets each element in vec to twice its index value
+Sets each element in vec to be a prime number
+
+In plain English, what is this code doing? vec is a vector of strings.\nsort(vec.begin(),vec.end()\n
+Nothing - compilation error
+Sorting the strings in the vector alphabetically
+Sorting all of the characters in the strings alphabetically
+Adding up all the strings in the vector from the beginning to the end
+
+In plain English, what is this code doing? vec is a vector of vector of ints with a number of rows equal to ROWS and columns equal to COLS. (ROWS and COLS are both >= 1.)\nint x = 1;\nfor (int i = 0; i < ROWS; i++) {\nfor (int j = 0; j < COLS; j++) {\nx *= vec.at(i).at(j);\n}\n}\n
+It is returning the product of all elements of the vector
+For every row, for every column, it is adding the numbers together
+Won't compile
+It is outputting to the screen every element of the 2D vector
+
+If you do vec.at(0) on an empty vector, what happens?
+it throws an exception. if your program doesn't catch it, it does not kill the program
+it throws an exception. if your program doesn't catch it, it kills the program
+it accessess memory out of bounds and seg faults
+it accessess memory out of bounds and does not seg fault
+
+Is this code C++ or Java?\nint x = 5;\nif (x) x = x + 10;
+c++
+both
+java
+neither
+
+Is this code C++ or Java?\nint x = 10;\nif (x < 10) System.out.println(x);
+c++
+neither
+java
+both
+
+Is this code C++ or Java?\npublic static final int BOB = 42;
+Java
+both
+neither
+c++
+
+Is this code C++ or Java?\nint x = 10;\nreturn x < 0 ? 10 : 20;
+both
+c++
+neither
+Java
+
+Suppose you have a list set up like this: A->B->C\nAnd you want to delete b, so you do: delete b;\nHow do you fix the pointers so that A's next is not pointing to B any more, but to C?
+a->next = c;
+c->next = a;
+b->next = c;
+a->next = nullptr;
+
+Is this code C++ or Java?\nint x = 0;\nfor (int i = 0; i < 10; i++)\nx = x + i;
+both
+java
+neither
+c++
+
+Given a few variables of type List * named a,b,c that have been initialized already, how would you set it so that the list goes in this order: c,a,b?
+c->next = a; a->next = b;
+c->next = b; a->next = c;
+a->next = b; a->next = c;
+b->next = a; a->next = c;
+
+If a long long is 8 bytes and an int is 4 bytes, how big is a Bob?\nunion Bob {\nlong long a;\nint b;\n};
+8
+6
+4
+12
+
+Histogramming a file like we're doing for the Shakespeare assignment means counting how often each word occurs. The best data structure to do the histogram with is:
+unordered_map
+array
+list
+vector
+
+What is the problem with this code? The user types in "Hello" <enter> then "World" but nothing is appearing in the getline\nstring s1, s2;\ncin >> s1;\ngetline(cin,s2);
+The cin >> will leave a trailing newline in the input, so the getline reads an empty string
+The >> should be a <<
+Missing semicolon
+Missing semicolon
+
+What is this line of code doing (x is an int that exists already)\nx = (x < 10) ? 10 : x;
+It is setting x to be the maximum between x and 10
+It is setting x to a string of some sort
+It is doing something like an if statement that will print the value of x and 10
+It is setting x to be the minimum between x and 10
+
+Suppose you have a pointer to a Pokemon named p. How do you print out the hp of p?
+cout << p->hp;
+print(p.hp);
+p->hp >> cout;
+cout << p.hp;
+
+Suppose we have the following unordered_map<string,int> bob;\nbob["Dragon"] = 1;\nbob["Sally"] = 2;\nbob["Cindy"] = 3;\nbob["Flying"] = 4;\nif you cout << bob["Dragon"] + bob["Cindy"], what do you get?
+4
+3
+13
+42
+
+What is the name of the function to convert from a string to a float in C++?
+stof
+atoi
+stoi
+stoll
+
+How do you tell a UNIX system to build a project using the instructions held in a Makefile? (Note that the name of the file is Makefile, not makefile.)
+make
+clang++
+g++
+compile
+
+What is the benefit of doing separate compilation? I.e., keeping multiple .cc files instead of having everything in a single file.
+While it doesn't go faster the first time, it speeds up compilation later when you're just editing one file at a time
+The first time you compile it it goes faster
+It prevents linker errors
+It reduces the number of logic errors in your code, such as by making if statements more likely to be correct
+
+What is wrong with this code? It is supposed to print out "Hi" when x is less than or equal to 20, but it is always printing it out\nif (x <= 20);\ncout << "Hi\n";
+Extra semicolon
+Should use << endl
+Missing curly brace
+Missing semicolon
+
+What is this image filter doing?\nfor (int i = 0; i < rows; i++) {\nfor (int j = 0; j < cols; j++) {\nvec.at(i).at(j).at(RED) /= 2;\nvec.at(i).at(j).at(GREEN) /= 2;\nvec.at(i).at(j).at(BLUE) /= 2;\n}\n}
+Darkens the image
+Brightens the image
+No answer text provided
+Greyscales the image
+
+What is this image filter doing?\nfor (int i = 0; i < rows; i++) {\nfor (int j = 0; j < cols; j++) {\nint r = vec.at(i).at(j).at(RED);\nvec.at(i).at(j).at(RED) = vec.at(i).at(j).at(GREEN);\nvec.at(i).at(j).at(GREEN) = vec.at(i).at(j).at(BLUE);\nvec.at(i).at(j).at(BLUE) = r;\n}\n}
+Rotates the color channels in the image
+Darkens the image
+Greyscales the image
+Vignettes the Image
+
+What is the problem with this code?\nstring s1, s2;\ncin >> s1;\ngetline(cin,s2);
+The cin >> s1 will leave a newline in the input buffer, making the getline put an empty string into s2 rather than what you expected you'd get
+It should be cin << s1 instead
+getline doesn't work with strings
+Missing semicolon
+
+What does a stringstream do?
+It allows us to use a string like it is a stream
+It is how the C language used strings
+It allows us to cout a Person to the screen
+It allows us to read and write to files
+
+How do we split a string containing columns of tab-delimited data into one string for each column?
+stringstream and getline
+cout and cin
+cmath and cctype
+ifstream and ofstream
+
+Suppose I have a class call Point that looks like this:\nstruct Point {\ndouble a,b;\n//Carl goes here\n};\nHow do I make a variable of type Point named c that sets c.a to 10 and c.b to 20?
+Point c{10,20};
+c Point = 10,20;
+c(Point) = {10,20};
+Point c = 10,20;
+
+Given the Point class above, and we want to add a member function to it called Carl that takes another Point, and returns the sum of both our a and b and the other Point's a and b. The question above shows where Carl goes.\nWhich is correct?
+double Carl(const Point &p) { return a + b + p.a + p.b; }
+double Carl() { return p1.a + p1.b + p2.a + p2.b; }
+double Carl(const Point &p1, const Point &p2) { return a + b + p2.a + p2.b; }
+double Carl(const Point &p1, const Point &p2) { return p1.a + p1.b + p2.a + p2.b; }
+
+Suppose I have this class:\nstruct Yarrow {\ndouble x,y;\n//HERE\n};\nWhat would I write where it says HERE to have a default constructor that sets x and y to 0?
+Yarrow() { x = y = 0; }
+Yarrow::Yarrow() { x = 0; }
+void Yarrow() { x = y = 0; }
+Yarrow(double new_x, double new_y) { x = new_x; y = new_y; }
+
+Suppose my constructor for Yarrow is also going to new some memory. Which one of these functions do I also need in my class?
+~Yarrow()
+Destroy()
+Free()
+Yarrow()
+
+Given this struct:\nstruct Person {\nstring name;\nint height;\ndouble bank_account;\n};\nSuppose we are now in main and want to make a variable of type Person named x. How do we do so?
+Person x;
+x Person;
+x is a person;
+Person(x);
+
+Given the struct and variable x above, how do we set x's height to 198?
+x.height = 198;
+x(height) = 198;
+x{198} = height;
+height(x) = 198;
+
+Suppose now that we have a vector of Persons as described above, named vec. How do we set the bank account balance of the person in the vector at index 10 to 0?
+vec.at(10).bank_account = 0;
+x.bank_account = 0;
+vec.bank_account = 0;
+vec.at(0).bank_account = 10;
+
+What do you need to include to get assert() to work?
+#include <cassert>
+#include <assert>
+#include <fstream>
+#include <die>
+
+If I open a file for writing like this:\nofstream scp("evan.txt");\nWhat happens to the existing evan.txt?
+It gets erased
+New data we write to it get appended at the beginning
+New data we write to it get appended at the end
+It turns the file into an array
+
+Of these four things, which is the worst part of developing in C++?
+The Error Messages
+Loops
+The Type System
+Functions
+
+Given the following 2D array: int arr[10][10], how do I set row 5, column 9 to be 42?
+arr[5][9] = 42;
+arr[9][5] = 42;
+arr.at(5).at(9) = 42;
+arr.col(9).row(5) = 42;
+
+Which one of these lines successfully creates a 2D vector of size SIZExSIZE?
+vector<vector<int>> vec(SIZE,vector<int>(SIZE));
+vector<vector<int>> vec(SIZE,SIZE));
+vector[vector<int>] vec(SIZE,vector<int>(SIZE));
+vector<vector<int>> vec(SIZExSIZE));
+
+Suppose we have an empty vector of ints named vec, and then we do the following:\nvec.push_back(10);\nvec.push_back(20);\nvec.push_back(30);\nWhat is in vec after these three lines run?
+{10,20,30}
+{0,10,20,30}
+Impossible to say
+{30,20,10}
+
+What is the type of x?\nauto x = 3.0;
+Double
+auto
+int
+float
+
+What is wrong with this code? It is supposed to set the elements of the array to 0,2,4,6,8, etc.\nint arr[100];\nfor (int i = 0; i <= 100; i++) {\narr[i] = 2*i;\n}
+It is going out of bounds
+i should start at 1, not 0
+Missing semicolon
+arr[i] should be arr(i)
+
+If I wanted to make 100 integers all at once, how should I do it?
+vector<int> vec(100);
+int vector vec(100);
+int vec[100];
+vector array 100;
+
+Suppose I have a vector of integers named scores, already filled with data. In plain English, what is this code going to do? for (int x : scores) x = x + 1;
+It will accomplish nothing since it is call by value not call by reference
+It will increment the value of all elements in the vector by one
+It won't compile as it is missing curly braces and badly formatted
+It is going to output to the screen the value of all integers in the vector plus one
+
+Which one of these development methods is quantitatively the worst in terms of completing projects on time and on budget?
+Waterfall
+Scrum
+Agile
+TDD
+
+Suppose you have 100 .cc files in your directory, one of which has been updated since the last time you compiled./nWhich method of compiling your code will likely result in the fastest compile time?
+g++ *.cc
+compile *.cc
+make (with a working Makefile in the directory)
+make (with no Makefile in the directory)
+
+If you want to add the letter "0" to the beginning of the string str, how would you do so?
+str = "0"s + str;
+str += "0";
+s = t + s;
+strcat("0",str)";
+
+Why do we split a class into a declaration in .h header files and definitions in .cc files?
+To improve compilation times
+To improve security of your programs
+Because you can't have definitions inside a class - they must be outside the class, using the scope resolution operator
+To lower the power consumption of a CPU
+
+Here is a basic linked list node:\nstruct Node {\nint data;\nNode *next = nullptr, *prev = nullptr;\n};\nGiven the following circular linked list I made by hand:\nNode *first = new Node{100};\nNode *second = new Node{200};\nNode *third = new Node{300};\nfirst->next = second;\nfirst->prev = third;\nsecond->prev = first;\nsecond->next = third;\nthird->next = first;\nthird->prev = second;\nWhich node does second->next->prev->next->prev refer to?
+Second
+First
+Third
+nullptr
+
+What is wrong with this line?\nx is an int and s is a string;\ncin >> x;\ngetline(cin,s);
+If the user hits enter after entering x, then s will be an empty string
+Missing semicolon
+You can't getline into s
+>> should be <<
+
+What is a class?
+A way of defining a new type that is a bunch of related variables and functions that can be performed on them
+It is basically an array
+A way of characterizing animals in a way more broadly than an order, family, genus, or species.
+When something is nice, like "high class"
+
+Suppose I make a new class to hold music artists:\nstruct Artist {\nstring name;\nint sales;\nvector<string> albums;\n};\nAnd then inside main I do this:\nArtist tool = {"Tool",11'000'000,{"Fear Inoculum", "Lateralus", "Undertow", "Aenima", "10k Days"}};\ncout << tool;\nWhy will this not compile?
+C++ does not know how to << variables of the Artist type unless you tell it how
+It should be "cout >> tool;" instead
+You can't initialize aggregate types using {} notation
+Missing semicolon
+
+What is wrong with this class declaration? It will hold information on an audio track, including the name and length of the tune.\nstruct Track:\nstring name;\nint duration;\n};
+: should be open curly brace
+class names can't be capitalized
+There's a semicolon after the close curly brace
+missing semicolon
+
+What color is (0,0,128)?
+Dark Blue
+Black
+Green
+Blue-Green
+
+What is the Big-O of this code? N is the size of vec. \nint sum = 0;\nfor (int i = 0; i < vec.size(); i++) sum += vec.at(i);
+O(N)
+O(1)
+O(N^2)
+Impossible to tell
+
+What is the Big-O of this code?\nfor (int i = 1; i <= N; i++)\nfor (int j = 1; j <= N; j++)\ncout << "Hello World" << endl;
+O(N^2)
+O(N)
+O(1)
+Recursion
+
+How many times will this function run if x is passed in as 10 on the initial call?\nint foo(int x) {\nreturn x + foo(x-1);\n}
+Infinite (until it crashes at least)
+9
+1
+10
+
+What would happen if I moved the line marked "HERE" to "THERE"? In other words, it will be one line above the recursive call to print_happy_name() rather than one line after it.\nvoid print_happy_name(string s) {\nif (s.length() == 0) return;\nchar c = s.back();\ns.pop_back();\nprint_happy_name(s);\ncout << (char)toupper(c) << "😊";\n}
+It will print the name backwards instead of forwards
+It will run into an infinite loop
+It will only print the last letter of the name
+It will fail to compile

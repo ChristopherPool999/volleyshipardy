@@ -5,15 +5,33 @@
 
 using durationDBL = std::chrono::duration<double>; 
 
-Volleyball::Volleyball(std::vector<std::vector<std::string>> &questions) : questions(questions) {}
+Volleyball::Volleyball(std::ifstream &file) {
+	std::string line;
 
-int Volleyball::startGame() {
-	initscr();
-	clear();
-	noecho();
-	cbreak();
-	std::srand(time(0));
-	return playGame();
+	for (int i = 0; std::getline(file, line); ) {
+        if (i == 5) {
+            i = 0;
+            continue;
+        }
+		if (i == 0) {
+			std::vector<std::string> temp(5);
+			questions.push_back(temp);
+		}		
+		questions[questions.size() - 1][i++] = line;
+	}
+    for (auto &v : questions) {
+        for (auto &s : v) {
+            for (int i = 0; i < int(s.size()); i++) {
+                if (int(s[i]) == 92) {
+                    s[i] = ' ';
+                    s[i+1] = '\n';
+                }
+            }
+        }
+        if (v[0][v[0].size() - 1] != '\n') {
+            v[0].push_back('\n');
+        }
+    }
 }
 
 void Volleyball::findQuestion() {
@@ -28,7 +46,7 @@ void Volleyball::findQuestion() {
 }
 
 void Volleyball::printQuestion() const {
-    printw("Player %d, I Want To Play A Game\n\nPick the correct question or else... (use 1, 2, 3, 4)\n"
+    printw("Player %d, I Want To Play A Game\nPick the correct question or else... (use 1, 2, 3, 4)\n\n"
         "%s\n\n%s\n%s\n%s\n%s\nTimer: %f\n\n",
         player,
         questions[questionNum][0].c_str(),
@@ -41,33 +59,6 @@ void Volleyball::printQuestion() const {
 
 std::pair<bool, double> Volleyball::getResults() {
 	auto start = std::chrono::high_resolution_clock::now();
-    
-    // auto updateTimer = [&start](durationDBL limit, durationDBL &curr, durationDBL &start) -> void {
-    //     while (curr < limit) {
-    //         auto end = std::chrono::high_resolution_clock::now();
-    //         auto  = std::chrono::duration_cast<durationDBL> (end - start);
-    //     }
-    // };
-    // std::thread t([](){
-    //     while (currTme)
-    // });
-
-	// std::future<void> timeExceeded = std::async([this]() {
-	// 	return std::this_thread::sleep_for(timeLimit);
-	// });
-	// std::future<int> input = std::async([](){
-	// 	return getch();
-	// });
-    // auto inputStatus = input.wait_for(timeLimit);
-    // auto timeStatus = timeExceeded.wait_for(timeLimit);
-
-    // if (input.get()) {
-	// 	auto end = std::chrono::high_resolution_clock::now();
-    // 	timeLimit = std::chrono::duration_cast<durationDBL> (end - start);
-    //     return 1;
-    // } else if (timeStatus == std::future_status::timeout || inputStatus == std::future_status::timeout) {
-    //     return 0;
-    // }
     int choice = getch() - '0';
 	auto end = std::chrono::high_resolution_clock::now();
     auto temp = timeLimit;
@@ -78,10 +69,6 @@ std::pair<bool, double> Volleyball::getResults() {
     return std::make_pair(1, temp.count() - timeLimit.count());
 }
 
-void Volleyball::swapPlayer() {
-	player = (player == 2 ? 1 : 2);
-}
-
 void Volleyball::showResults(std::pair<bool, double> &results) {
     std::string faceEmoji = (results.first ? "correct :)" : "incorrect :(");
     printw("You chose %s. The correct answer was %s\nwith a time left of... : %s\n\n",
@@ -90,28 +77,20 @@ void Volleyball::showResults(std::pair<bool, double> &results) {
     std::this_thread::sleep_for(std::chrono::seconds(2));
 }
 
-void Volleyball::printUI(std::string question = "", std::string questionResult = "") {
-    // auto time = std::chrono::duration_cast<durationDBL>(timeLimit - currTime).count();
-    // std::string strTime = std::to_string(time);
-    // if (strTime == "0") {
-    //     strTime == "";
-    // }
-    // printw("\t\t\t\tVOLLYBALL\n%s\n%s\n%s", question.c_str(), questionResult.c_str(), strTime.c_str());
-}
-
 int Volleyball::playGame() {
+	std::srand(time(0));
 	while (true) {
 		findQuestion();
         printQuestion();
         std::pair<bool, double> results = getResults();
         showResults(results);
 		if (!results.first) {
-    		// clear();
-    		// endwin();
+    		clear();
+    		endwin();
 			return (player == 2 ? 1 : 2);
 		}
-		swapPlayer();
-        // clear();
+        player = (player == 2 ? 1 : 2);
+        clear();
     }
-	return 0;
+	return 1;
 }
