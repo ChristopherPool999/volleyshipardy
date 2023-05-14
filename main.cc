@@ -11,11 +11,15 @@ int main() {
     use_default_colors();
     start_color();
     init_pair(WATER, COLOR_BLUE, COLOR_BLUE);
-    init_pair(SHIP, COLOR_BLACK, COLOR_WHITE);
+    init_pair(SHIP, COLOR_WHITE, COLOR_BLACK);
     init_pair(SUNK_SHIP, COLOR_BLACK, COLOR_BLUE);
     init_pair(PLACE_SHIP_OK, COLOR_BLACK, COLOR_GREEN);
     init_pair(PLACE_SHIP_BAD, COLOR_BLACK, COLOR_RED);
     init_pair(NORMAL, COLOR_WHITE, -1);
+
+    printw("use wasd to move, arrow to change direction, enter to place"
+           ". Press any key to confirm and to continue"); // placeholder
+    getch();
 
     std::ifstream file("questions.txt");
     auto volleyvall = Volleyball(file);

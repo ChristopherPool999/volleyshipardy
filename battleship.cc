@@ -9,7 +9,7 @@ std::string Battleship::getTileOutput(int tileX, int tileY) const {
     int cursorX = cursorPostion.first;
     int cursorY = cursorPostion.second;
 
-    std::string output = std::string(1, ship) + "  "; 
+    std::string output = std::string(1, ship); 
     if (direction == RIGHT && cursorY == tileY) {
          if (tileX >= cursorX && tileX <= cursorX + length) {
             return output;
@@ -29,16 +29,15 @@ std::string Battleship::getTileOutput(int tileX, int tileY) const {
     }
     std::string text = "";
     text.push_back(grid1[tileY][tileX]);
-    text += "  ";
     return text;
 }
 
 void Battleship::printUI(int player) const {
     std::string left = (player == 1 ? "   YOU   " : "PLAYER 1");
     std::string right = (player == 2 ? "   YOU   " : "PLAYER 2");
-    printw("           %s                %d             %s            \n", left.c_str(), 60, right.c_str());
+    printw("    %s           %d        %s            \n", left.c_str(), 60, right.c_str());
     printw("___________________________________________________________________________\n");
-    printw("  0  1  2  3  4  5  6  7  8  9       |       0  1  2  3  4  5  6  7  8  9  \n"  );
+    printw("  0123456789     |       0123456789  \n"  );
 
     char l = 'A';
     for (int y = 0; y < row; y++) {
@@ -52,12 +51,16 @@ void Battleship::printUI(int player) const {
         for (int x = 0; x < col; x++) {
             text += getTileOutput(x, y);
         }
-        if (text[0] != 'X') {
-            attrset(COLOR_PAIR(WATER));
-            printw("%s", (text += '\n').c_str());
-            attrset(COLOR_PAIR(NORMAL));
-        } else {
-            printw("%s", (text += '\n').c_str());
+        text = (text += '\n').c_str();
+        for (int i = 0; i < int(text.size()); i++) {
+            if (text[i] == ' ' && ((i > 1 && i <= col + 1) || (i > int(text.size()) - col - 2))) {
+                attrset(COLOR_PAIR(WATER));
+            } else if (text[i] == ship) {
+                attrset(COLOR_PAIR(SHIP));
+            } else {
+                attrset(COLOR_PAIR(NORMAL));
+            }
+            printw("%c", text[i]);
         }
     }
 }
@@ -94,11 +97,12 @@ void Battleship::handleDirection(int KEY) {
     }
 }
 
-std::vector<std::pair<int, int>> Battleship::getValidTiles() {
-    std::vector<std::pair<int, int>> tiles;
+void Battleship::getPlacementTiles() {
+    placement.first = std::set<std::string> {};
+    placement.second = true;
     for (int i = 0; i < shipSizes[currentShip]; i++) {
-        int y = cursorPostion.second;
         int x = cursorPostion.first;
+        int y = cursorPostion.second;
         if (direction == UP) {
             y -= i;
         } else if (direction == RIGHT) {
@@ -109,11 +113,15 @@ std::vector<std::pair<int, int>> Battleship::getValidTiles() {
             y += i;
         }
         if (y > col || x > row || y < 0 || x < 0) {
-            break;
+            placement.second = false;
+            return;
         }
-        tiles.push_back({y, x});
+        if (grid1[y][x] == ship) {
+            placement.second = false;
+        }
+        // std::string key = x + " " + y; // uncommenting this 
+        // placement.first.insert(key); // gives segfault
     }
-    return tiles;
 }
 
 void Battleship::placeShips() {
@@ -126,12 +134,23 @@ void Battleship::placeShips() {
             handleMovement(KEY);
         } else if (KEY == LEFT || KEY == RIGHT || KEY == UP || KEY == DOWN) {
             handleDirection(KEY);
-        } else if (KEY == ENTER && int(getValidTiles().size()) == shipSizes[currentShip]) {
-            std::vector<std::pair<int, int>> tiles = getValidTiles();
-            for (auto p : tiles) {
-                grid1[p.first][p.second] = ship;               
+        } else if (KEY == ENTER && placement.second) {
+            for (int i = 0; i < shipSizes[currentShip]; i++) {
+                int x = cursorPostion.first;
+                int y = cursorPostion.second;
+                if (direction == UP) {
+                    y -= i;
+                } else if (direction == RIGHT) {
+                    x += i;
+                } else if (direction == LEFT) {
+                    x -= i;
+                } else if (direction == DOWN) {
+                    y += i;
+                }
+                grid1[y][x] = ship;
             }
             currentShip++;            
         }
+        getPlacementTiles();
     }
 }
