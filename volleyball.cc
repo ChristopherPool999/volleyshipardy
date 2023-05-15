@@ -85,12 +85,12 @@ int Volleyball::playGame() {
         std::pair<bool, double> results = getResults();
         showResults(results);
 		if (!results.first) {
-    		erase();
+    		clear();
     		endwin();
 			return (player == 2 ? 1 : 2);
 		}
         player = (player == 2 ? 1 : 2);
-        erase();
+        clear();
     }
 	return 1;
 }
