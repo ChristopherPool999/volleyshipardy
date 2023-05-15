@@ -19,17 +19,18 @@
 #define S      115
 #define D      100
 
-#define ship '#'
-
-#define WATER 1
-#define SHIP 2
-#define SUNK_SHIP 3
-#define PLACE_SHIP_OK 4
-#define PLACE_SHIP_BAD 5
-#define NORMAL 6
+enum Tile {
+    WATER = 1,
+    SHIP = 2,
+    SUNK_SHIP = 3,
+    SHIP_MISS = 4,
+    PLACE_SHIP_OK = 5,
+    PLACE_SHIP_BAD = 6,
+    NORMAL = 7
+};
 
 class Battleship {
-    std::vector<std::vector<char>> grid1;
+    std::vector<std::vector<Tile>> grid1;
     int shipSizes[5] = {2, 3, 3, 4, 5};
     int currentShip = 0;
     int player1Pieces = std::accumulate(std::begin(shipSizes), std::end(shipSizes), 0);
@@ -45,7 +46,7 @@ public:
     void attack();
     void handleMovement(int);
     void handleDirection(int);
-    std::string getTileOutput(int x, int y) const;
+    char getTile(int x, int y) const;
 };
 
 #endif // BATTLESHIP_H

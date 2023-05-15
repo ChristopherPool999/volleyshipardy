@@ -13,7 +13,7 @@ volleyball.o: volleyball.cc volleyball.h #dependancies
 	${CC} ${CFLAGS} -c volleyball.cc
 
 battleship.o: battleship.cc battleship.h #dependancies
-	${CC} ${CFLAGS} -c battleship.cc
+	${CC} ${CFLAGS} -c battleship.cc 
 
 clean: # rm removes files, -rf forcible removes them
 	rm -rf ${OBJS}
