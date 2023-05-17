@@ -5,9 +5,10 @@
 #include <iostream>
 #include <numeric>
 #include <set>
+#include <cmath>
 
-#define row 10
-#define col 10
+#define rowSize 10
+#define colSize 10
 
 #define ENTER  10
 #define UP     65
@@ -19,33 +20,47 @@
 #define S      115
 #define D      100
 
-#define ship '#'
+#define COLOR_WATER 1
+#define COLOR_SHIP 2
+#define COLOR_HIT 3
+#define COLOR_MISS 4
+#define COLOR_PLACE_SHIP_OK 5
+#define COLOR_PLACE_SHIP_BAD 6
+#define COLOR_CURSOR 7
+#define COLOR_NORMAL 8
 
-#define WATER 1
-#define SHIP 2
-#define SUNK_SHIP 3
-#define PLACE_SHIP_OK 4
-#define PLACE_SHIP_BAD 5
-#define NORMAL 6
+#define PLAYER1 8
+#define PLAYER2 9
+
+enum gridMap {
+    MAP_SHIP = '#',
+    MAP_MISS = 'X',
+    MAP_HIT = 'O',
+    MAP_WATER = ' ',
+    MAP_CURSOR = '*'
+};
 
 class Battleship {
-    std::vector<std::vector<char>> grid1;
+    std::vector<std::vector<gridMap>> grid1;
     int shipSizes[5] = {2, 3, 3, 4, 5};
     int currentShip = 0;
+    bool isPlacementOver() const;
     int player1Pieces = std::accumulate(std::begin(shipSizes), std::end(shipSizes), 0);
     int player2Pieces = player1Pieces;
     std::pair<int, int> cursorPostion = {1, 1};
     int direction = RIGHT;
-    std::pair<std::set<std::string>, bool> placement;
-    void getPlacementTiles();
+    int attacks = 3;
+    bool isPlaceable() const;
 public:
     Battleship();
-    void printUI(int) const;
-    void placeShips();
+    void printUI() const;
+    void playBattleship();
     void attack();
     void handleMovement(int);
     void handleDirection(int);
-    std::string getTileOutput(int x, int y) const;
+    bool inPlacementRange(int x, int y) const;
+    bool isGameOver() const;
+    int getWinner() const;
 };
 
 #endif // BATTLESHIP_H

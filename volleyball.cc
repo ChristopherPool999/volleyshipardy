@@ -45,21 +45,40 @@ void Volleyball::findQuestion() {
     }
 }
 
-void Volleyball::printQuestion() const {
-    printw("Player %d, I Want To Play A Game\nPick the correct question or else... (use 1, 2, 3, 4)\n\n"
-        "%s\n\n%s\n%s\n%s\n%s\nTimer: %f\n\n",
-        player,
-        questions[questionNum][0].c_str(),
-        questions[questionNum][1].c_str(),
-        questions[questionNum][2].c_str(),
-        questions[questionNum][3].c_str(),
-        questions[questionNum][4].c_str(),
-        timeLimit.count());
+void Volleyball::printQuestion() {
+    int printCol = 40;
+    std::string playerStr = player == 1 ? "YOU!!!" : "PLAYER 2!!!";
+    mvaddstr(0, 45, playerStr.c_str());
+    char output[200];
+    sprintf(output,
+        "Pick the correct question in - %f - or else...", timeLimit.count()
+    );
+    mvaddstr(2, 40, output);
+    printRow = 3;
+    for (auto c : questions[questionNum][0]) {
+        if (c == '\n') {
+            printCol = 40;
+            printRow++;
+            continue;
+        }
+        mvaddch(printRow, printCol++, c);
+    }
+    std::string question1 = "1.) " + questions[questionNum][1];
+    std::string question2 = "2.) " + questions[questionNum][2];
+    std::string question3 = "3.) " + questions[questionNum][3];
+    std::string question4 = "4.) " + questions[questionNum][4];
+    mvaddstr(printRow += 2, 40, question1.c_str());
+    mvaddstr(++printRow, 40, question2.c_str());
+    mvaddstr(++printRow, 40, question3.c_str());
+    mvaddstr(++printRow, 40, question4.c_str());
 }
 
 std::pair<bool, double> Volleyball::getResults() {
 	auto start = std::chrono::high_resolution_clock::now();
-    int choice = getch() - '0';
+    int choice = -1;
+    while (choice != 1 && choice != 2 && choice != 3 && choice != 4) {
+        choice = getch() - '0';
+    }
 	auto end = std::chrono::high_resolution_clock::now();
     auto temp = timeLimit;
     timeLimit = std::chrono::duration_cast<durationDBL>(end - start);
@@ -71,26 +90,28 @@ std::pair<bool, double> Volleyball::getResults() {
 
 void Volleyball::showResults(std::pair<bool, double> &results) {
     std::string faceEmoji = (results.first ? "correct :)" : "incorrect :(");
-    printw("You chose %s. The correct answer was %s\nwith a time left of... : %s\n\n",
-            faceEmoji.c_str(), answer.c_str(), std::to_string(results.second).c_str());
+    char output[200];
+    sprintf(output, 
+        "You chose %s. The correct answer was %s",
+            faceEmoji.c_str(), answer.c_str()
+    );
+    mvaddstr(printRow += 2, 40, output);
+    sprintf(output, 
+        "With a time limit left of... %s", std::to_string(results.second).c_str()
+    );
+    mvaddstr(++printRow, 40, output);
     refresh();
-    std::this_thread::sleep_for(std::chrono::seconds(2));
 }
 
-int Volleyball::playGame() {
+std::pair<bool, double> Volleyball::playGame(int player, double timeLimit) {
+    this->player = player;
+    this->timeLimit = std::chrono::duration<double>(timeLimit);
 	std::srand(time(0));
-	while (true) {
-		findQuestion();
-        printQuestion();
-        std::pair<bool, double> results = getResults();
-        showResults(results);
-		if (!results.first) {
-    		clear();
-    		endwin();
-			return (player == 2 ? 1 : 2);
-		}
-        player = (player == 2 ? 1 : 2);
-        clear();
-    }
-	return 1;
+    findQuestion();
+
+    printQuestion();
+    std::pair<bool, double> results = getResults();
+    showResults(results);
+    std::this_thread::sleep_for(std::chrono::seconds(3));
+    return results;
 }

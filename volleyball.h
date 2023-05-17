@@ -10,17 +10,17 @@
 class Volleyball {
     std::vector<std::vector<std::string>> questions;
 	std::set<int> used = {};
-	std::chrono::duration<double> timeLimit = std::chrono::duration<double>(10);
-    std::chrono::duration<double> currTime = timeLimit - timeLimit;
+	std::chrono::duration<double> timeLimit;
     int player = 1;
+    int printRow = 0;
 	int questionNum = -1;
     std::string answer = "";
     void findQuestion();
-    void printQuestion() const;
+    void printQuestion();
     std::pair<bool, double> getResults();
     void showResults(std::pair<bool, double>&);
 public:
     Volleyball(std::ifstream&);
-    int playGame();
+    std::pair<bool, double> playGame(int, double);
 };
 #endif // VOLLEYBALL_H 
