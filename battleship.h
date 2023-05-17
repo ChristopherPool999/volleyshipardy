@@ -1,6 +1,5 @@
 #ifndef BATTLESHIP_H
 #define BATTLESHIP_H
-#include <boost/asio.hpp>
 #include <vector>
 #include <iostream>
 #include <numeric>
@@ -9,7 +8,7 @@
 #include "ncurses.h"
 
 #define rowSize 10
-#define colSize 10 // 
+#define colSize 10
 
 #define ENTER  10
 #define UP     65
@@ -51,10 +50,9 @@ class Battleship {
     std::pair<int, int> cursorPostion = {1, 1};
     int direction = RIGHT;
     int attacks = 3;
-    boost::asio::ip::tcp::iostream &stream;
     bool isPlaceable() const;
 public:
-    Battleship(boost::asio::ip::tcp::iostream&);
+    Battleship();
     void printUI() const;
     void playBattleship();
     void attack();

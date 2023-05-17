@@ -2,12 +2,6 @@
 #include "battleship.h"
 #include <curses.h>
 
-// I don't have much to say, 
-// but this is the best implmentation I have seen so far
-// It just needs to be finished, thats basically 
-// it
-// - Alex~
-
 int main() {
 	initscr();
 	clear();

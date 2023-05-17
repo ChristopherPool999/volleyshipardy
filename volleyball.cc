@@ -2,7 +2,7 @@
 
 using durationDBL = std::chrono::duration<double>; 
 
-Volleyball::Volleyball(std::ifstream &file, boost::asio::ip::tcp::iostream& stream) : stream(stream) {
+Volleyball::Volleyball(std::ifstream &file) {
 	std::string line;
 
 	for (int i = 0; std::getline(file, line); ) {
