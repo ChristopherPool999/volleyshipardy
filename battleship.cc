@@ -1,6 +1,6 @@
 #include "battleship.h"
 
-Battleship::Battleship() {
+Battleship::Battleship(boost::asio::ip::tcp::iostream &stream) : stream(stream) {
     grid1 = std::vector<std::vector<gridMap>> (rowSize + 1, std::vector<gridMap>(colSize + 1, MAP_WATER)); 
 }
 

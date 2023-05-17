@@ -1,11 +1,8 @@
-#include <iostream>
-#include <ncurses.h>
 #include "volleyball.h"
-#include <algorithm>
 
 using durationDBL = std::chrono::duration<double>; 
 
-Volleyball::Volleyball(std::ifstream &file) {
+Volleyball::Volleyball(std::ifstream &file, boost::asio::ip::tcp::iostream& stream) : stream(stream) {
 	std::string line;
 
 	for (int i = 0; std::getline(file, line); ) {
