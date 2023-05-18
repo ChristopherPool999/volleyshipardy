@@ -10,16 +10,6 @@
 #define rowSize 10
 #define colSize 10
 
-#define ENTER  10
-#define UP     65
-#define RIGHT  67
-#define DOWN   66
-#define LEFT   68
-#define W      119
-#define A      97
-#define S      115
-#define D      100
-
 #define COLOR_WATER 1
 #define COLOR_SHIP 2
 #define COLOR_HIT 3
@@ -32,6 +22,19 @@
 #define PLAYER1 8
 #define PLAYER2 9
 
+enum Key {
+    ENTER =  10,
+    UP    =  65,
+    RIGHT =  67,
+    DOWN  =  66,
+    LEFT  =  68,
+    W     =  119,
+    A     =  97,
+    S     =  115,
+    D     =  100
+
+};
+
 enum gridMap {
     MAP_SHIP = '#',
     MAP_MISS = 'X',
@@ -41,26 +44,31 @@ enum gridMap {
 };
 
 class Battleship {
-    std::vector<std::vector<gridMap>> grid1;
+    std::vector<std::vector<gridMap>> grid;
+    int player;
     int shipSizes[5] = {2, 3, 3, 4, 5};
     int currentShip = 0;
     bool isPlacementOver() const;
-    int player1Pieces = std::accumulate(std::begin(shipSizes), std::end(shipSizes), 0);
-    int player2Pieces = player1Pieces;
+    int pieces = std::accumulate(std::begin(shipSizes), std::end(shipSizes), 0);
     std::pair<int, int> cursorPostion = {1, 1};
     int direction = RIGHT;
     int attacks = 3;
     bool isPlaceable() const;
 public:
-    Battleship();
+    Battleship(int);
     void printUI() const;
-    void playBattleship();
+    bool handleInput(char setInput = '\0');
+    void handleMovement(Key);
+    void handleDirection(Key);
     void attack();
-    void handleMovement(int);
-    void handleDirection(int);
     bool inPlacementRange(int x, int y) const;
     bool isGameOver() const;
     int getWinner() const;
+    void incrementShip();
+    void setDirection(Key);
+    void setPosition(int, int);
+    void setTile(char, int, int);
+    void deincrementPiece();
 };
 
 #endif // BATTLESHIP_H

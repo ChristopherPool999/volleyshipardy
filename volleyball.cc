@@ -44,7 +44,7 @@ void Volleyball::findQuestion() {
 
 void Volleyball::printQuestion() {
     int printCol = 40;
-    std::string playerStr = player == 1 ? "YOU!!!" : "PLAYER 2!!!";
+    std::string playerStr = player == 1 ? "PLAYER1!!!" : "PLAYER 2!!!";
     mvaddstr(0, 45, playerStr.c_str());
     char output[200];
     sprintf(output,
@@ -109,6 +109,6 @@ std::pair<bool, double> Volleyball::playGame(int player, double timeLimit) {
     printQuestion();
     std::pair<bool, double> results = getResults();
     showResults(results);
-    std::this_thread::sleep_for(std::chrono::seconds(3));
+    std::this_thread::sleep_for(std::chrono::seconds(5));
     return results;
 }

@@ -2,6 +2,13 @@
 #include "battleship.h"
 #include <curses.h>
 
+void printscr(Battleship &player1, Battleship &player2) {
+        erase();
+        player1.printUI();
+        player2.printUI();
+        refresh();
+}
+
 int main() {
 	initscr();
 	clear();
@@ -20,18 +27,33 @@ int main() {
     init_pair(COLOR_CURSOR, COLOR_WHITE, COLOR_BLACK);
     attrset(COLOR_PAIR(COLOR_NORMAL));
 
+    ///  
+
     std::ifstream file("questions.txt");
     auto volleyvall = Volleyball(file);
-    auto battleship = Battleship();
-    battleship.playBattleship();
-    erase();
-    refresh();
+    auto battleship_p1 = Battleship(1);
+    auto battleship_p2 = Battleship(2);
+    printscr(battleship_p1, battleship_p2);
 
-    while (!battleship.isGameOver()) {
+    bool turnOver = false;
+    while (!turnOver) {
+        turnOver = battleship_p1.handleInput();
+        printscr(battleship_p1, battleship_p2);
+    }
+    turnOver = false;
+    while (!turnOver) {
+        turnOver = battleship_p2.handleInput();
+        printscr(battleship_p1, battleship_p2);
+    }
+
+    // until here is good
+
+
+    while (!battleship_p1.isGameOver()) {
         int volleyballTurn = 1;
         double timeLimit = 10;
         while (true) {
-            battleship.printUI();
+            battleship_p1.printUI();
             std::pair<bool, double> results = volleyvall.playGame(volleyballTurn, timeLimit);
             timeLimit = results.second;
             if (!results.first) {
@@ -42,17 +64,17 @@ int main() {
             erase();
         }
         erase();
-        battleship.printUI();
-        battleship.playBattleship();
-        if (battleship.isGameOver()) {
+        battleship_p1.printUI();
+        battleship_p1.handleInput();
+        if (battleship_p1.isGameOver()) {
             break;
         }
     }
     erase();
-    battleship.printUI();
+    battleship_p1.printUI();
     char winnerInfo[200];
     sprintf(winnerInfo,
-        "Player %d has sunk all of the ships! They win!!!", battleship.getWinner()
+        "Player %d has sunk all of the ships! They win!!!", battleship_p1.getWinner()
     );
     mvaddstr(20, 0, winnerInfo);
     mvaddstr(22, 0, "Press any key to clear terminal and exit");
