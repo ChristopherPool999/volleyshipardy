@@ -9,15 +9,11 @@ bool Battleship::isPlacementOver() const {
 }
 
 bool Battleship::isGameOver() const {
-    return pieces == 0 || pieces == 0;
-}
-
-int Battleship::getWinner() const {
-    return (pieces == 0 ? 2 : 1);
+    return pieces == 0;
 }
 
 void Battleship::setPlacementOver() {
-    currentShip = 5;
+    currentShip = 10;
 }
 
 void Battleship::setDirection(Key this_key) {
@@ -31,7 +27,7 @@ void Battleship::setPosition(int row, int col) {
     if (row < 0 || col < 0 || row >= rowSize || col >= colSize) {
         throw std::runtime_error("position is out of map.\n");
     }
-    cursorPostion = {col, row}; 
+    cursorPostion = {row, col}; 
 }
 
 std::pair<int, int> Battleship::getPosition() const {
@@ -134,6 +130,7 @@ bool Battleship::isPlaceable() const {
 
 bool Battleship::handleInput(char setInput) {
     Key this_key = static_cast<Key>(setInput ? setInput : getch());
+    
     if (this_key == W || this_key == A || this_key == S || this_key == D) {
         handleMovement(this_key);
     } else if (this_key == LEFT || this_key == RIGHT || this_key == UP || this_key == DOWN) {

@@ -33,7 +33,6 @@ enum Key {
     A     =  97,
     S     =  115,
     D     =  100
-
 };
 
 enum gridMap {
@@ -49,13 +48,13 @@ class Battleship {
     int player;
     int shipSizes[5] = {2, 3, 3, 4, 5};
     int currentShip = 0;
-    bool isPlacementOver() const;
     int pieces = std::accumulate(std::begin(shipSizes), std::end(shipSizes), 0);
     std::pair<int, int> cursorPostion = {1, 1};
     int direction = RIGHT;
     bool isPlaceable() const;
 public:
     Battleship(int);
+    bool isPlacementOver() const;
     void printUI(int) const;
     bool handleInput(char setInput = '\0');
     void handleMovement(Key);
@@ -63,7 +62,6 @@ public:
     bool attack();
     bool inPlacementRange(int x, int y) const;
     bool isGameOver() const;
-    int getWinner() const;
     void setPlacementOver();
     void setDirection(Key);
     void setPosition(int, int);

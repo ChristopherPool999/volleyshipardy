@@ -104,11 +104,6 @@ void Volleyball::showResults(bool isCorrect, double timeLimit) {
         "With a time limit left of... %s", std::to_string(timeLimit).c_str()
     );
     mvaddstr(++printRow, 40, output);
-    if (isCorrect) {
-        mvaddstr(++printRow, 0, "Swapping players...");
-    } else {
-        mvaddstr(++printRow, 0, "Get ready to be attacked...");
-    }
     refresh();
 }
 
