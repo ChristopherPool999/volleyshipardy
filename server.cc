@@ -10,6 +10,7 @@ using boost::asio::ip::tcp;
 #include "battleship.h"
 #include <curses.h>
 #include <random>
+#include <thread>
 
 #define server 1
 #define client 2
@@ -31,6 +32,31 @@ void debug_showInputs(Battleship& _server, Battleship& _client) {
     }
     refresh();
     exit(1);
+}
+
+void sendGrid(Battleship &serverGrid, tcp::iostream& stream) {
+    for (int i = 0; i < 10; i++) { // tells server our grid
+        for (int j = 0; j < 10; j++) {
+            char ins = serverGrid.getTile(i, j);
+            if (ins == ' ') {
+                ins = null;
+            } 
+            stream << ins;
+        }
+    }  
+}
+
+void askForGrid(Battleship &clientGrid, tcp::iostream& stream) {
+    for (int i = 0; i < 10; i++) { // reads the servers grid
+        for (int j = 0; j < 10; j++) {
+            char temp;
+            stream >> temp;
+            if (temp == null) {
+                temp = ' ';
+            } 
+            clientGrid.setTile(static_cast<gridMap>(temp), i, j);
+        }
+    }
 }
 
 void printscr(Battleship &player1, Battleship &player2) {
@@ -68,7 +94,7 @@ int main() {
             init_pair(COLOR_PLACE_SHIP_BAD, COLOR_BLACK, COLOR_RED);
             init_pair(COLOR_PLACE_SHIP_OK, COLOR_BLACK, COLOR_GREEN);
             init_pair(COLOR_NORMAL, COLOR_WHITE, -1);
-            init_pair(COLOR_CURSOR, COLOR_WHITE, COLOR_BLACK);
+            init_pair(COLOR_CURSOR, COLOR_BLACK, COLOR_BLACK);
             init_pair(COLOR_PLAYER, COLOR_YELLOW, COLOR_BLACK);
             attrset(COLOR_PAIR(COLOR_NORMAL));
 
@@ -76,7 +102,7 @@ int main() {
             refresh();
 
             std::ifstream file("questions.txt");
-            auto volleyvall = Volleyball(file, server);
+            auto volleyball = Volleyball(file, server);
             auto battleship_client = Battleship(2);
             auto battleship_server = Battleship(1);
             printscr(battleship_server, battleship_client);
@@ -87,26 +113,9 @@ int main() {
                 printscr(battleship_server, battleship_client);
             }
 
-            for (int i = 0; i < 10; i++) { // tells client our grid
-                for (int j = 0; j < 10; j++) {
-                    char ins = battleship_server.getTile(i, j);
-                    if (ins == ' ') {
-                        ins = null;
-                    } 
-                    stream << ins;
-                }
-            }   
-
-            for (int i = 0; i < 10; i++) { // reads clients grid
-                for (int j = 0; j < 10; j++) {
-                    char temp;
-                    stream >> temp; 
-                    if (temp == null) {
-                        temp = ' ';
-                    } 
-                    battleship_client.setTile(static_cast<gridMap>(temp), i, j);
-                }
-            }
+            sendGrid(battleship_server, stream);
+            askForGrid(battleship_client, stream);
+            battleship_client.setPlacementOver();
 
             srand(time(0));
             char randSeed = 'A' + rand() % 25; // to represent some random ascii char
@@ -117,30 +126,58 @@ int main() {
             while (!battleship_client.isGameOver()) {
                 double timeLimit = 10;
                 bool isCorrect;
-                while (true) {  // networking works until here (volleyball)
+                while (true) {
                     printscr(battleship_server, battleship_client);
                     std::pair<bool, double> results;
-                    results = volleyvall.playGame(timeLimit, volleyballTurn == server);
+                    results = volleyball.playGame(timeLimit, volleyballTurn == server);
                     if (volleyballTurn == server) {
-                        timeLimit = results.second;
+                        timeLimit = min(int(ceil(results.second)), 9);
+                        timeLimit = max(int(timeLimit), 0);
                         isCorrect = results.first;
-                        stream << isCorrect ? '1' : '0';
-                        results.second = max(int(ceil(results.second)), 9);
-                        stream << results.second - '0';
+                        stream << (isCorrect ? '1' : '0');
+                        stream << char(int(timeLimit) + '0');
                     } else {
                         char output;
                         stream >> output;
                         isCorrect = (output == '1');
                         stream >> output; 
-                        timeLimit = output - '0';
+                        timeLimit = int(output - '0');
                     }
+                    volleyball.showResults(isCorrect, timeLimit);
+                    std::this_thread::sleep_for(std::chrono::seconds(2));
                     volleyballTurn = (volleyballTurn == 1 ? 2 : 1);
+                    if (timeLimit <= 0 || !isCorrect) {
+                        break;
+                    }
                 }
-                printscr(battleship_server, battleship_client);
-                // battleship_client.printUI();
-                // battleship_client.handleInput();
+                if (volleyballTurn == server) { // means client got it wrong and we swapped turns for next round
+                    int shots = 3;
+                    while (shots) {
+                        int input = -1;
+                        printscr(battleship_client, battleship_server);
+                        mvaddstr(16, 20, "You Are Attacking. Choose a tile.");
+                        refresh();
+                        while (input != LEFT && input != RIGHT && input != DOWN && input != UP && 
+                                    input != ENTER && input != W && input != S && input != A && input != D) {
+                            input = getch();
+                        }
+                        if (battleship_client.handleInput(char(input))) {
+                            shots--;
+                        }
+                        stream << char(input); 
+                    }
+                } else {
+                    char response;
+                    while (response != ENTER) {
+                        stream >> response;
+                        battleship_client.handleInput(response);
+                        printscr(battleship_server, battleship_client);
+                        mvaddstr(16, 20, "You Are being attacked!!");
+                        refresh();
+                    }
+                }
             }
-            erase();
+            printscr(battleship_server, battleship_client);
             // battleship_client.printUI();
             char winnerInfo[200];
             sprintf(winnerInfo,

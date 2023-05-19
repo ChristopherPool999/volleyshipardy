@@ -28,8 +28,8 @@ class Volleyball {
     std::pair<bool, double> getResults();
 public:
     Volleyball(std::ifstream &, int);
-    std::pair<bool, double> playGame(double, bool isPlaying);
-    void showResults(std::pair<bool, double>&);
+    std::pair<bool, double> playGame(double, bool);
+    void showResults(bool, double);
 };
 #endif // VOLLEYBALL_H 
 

@@ -86,13 +86,14 @@ std::pair<bool, double> Volleyball::getResults() {
     auto temp = timeLimit;
     timeLimit = std::chrono::duration_cast<durationDBL>(end - start);
     if (choice < 0 || choice > 4 || timeLimit.count() >= temp.count() || questions[questionNum][choice] != answer) {
-        return std::make_pair(0, temp.count() - timeLimit.count());
+        return std::make_pair(0, temp.count() - timeLimit.count()); 
     }
     return std::make_pair(1, temp.count() - timeLimit.count());
 }
 
-void Volleyball::showResults(std::pair<bool, double> &results) {
-    std::string faceEmoji = (results.first ? "correct :)" : "You lose. :(");
+void Volleyball::showResults(bool isCorrect, double timeLimit) {
+    std::string lossReason = (timeLimit <= 0 ? "You ran out of time :(" : "you chose incorrectly :(");
+    std::string faceEmoji = (isCorrect ? "correct :)" : lossReason);
     char output[200];
     sprintf(output, 
         "You chose %s. The correct answer was %s",
@@ -100,9 +101,14 @@ void Volleyball::showResults(std::pair<bool, double> &results) {
     );
     mvaddstr(printRow += 2, 40, output);
     sprintf(output, 
-        "With a time limit left of... %s", std::to_string(results.second).c_str()
+        "With a time limit left of... %s", std::to_string(timeLimit).c_str()
     );
     mvaddstr(++printRow, 40, output);
+    if (isCorrect) {
+        mvaddstr(++printRow, 0, "Swapping players...");
+    } else {
+        mvaddstr(++printRow, 0, "Get ready to be attacked...");
+    }
     refresh();
 }
 

@@ -53,7 +53,6 @@ class Battleship {
     int pieces = std::accumulate(std::begin(shipSizes), std::end(shipSizes), 0);
     std::pair<int, int> cursorPostion = {1, 1};
     int direction = RIGHT;
-    int attacks = 3;
     bool isPlaceable() const;
 public:
     Battleship(int);
@@ -61,11 +60,11 @@ public:
     bool handleInput(char setInput = '\0');
     void handleMovement(Key);
     void handleDirection(Key);
-    void attack();
+    bool attack();
     bool inPlacementRange(int x, int y) const;
     bool isGameOver() const;
     int getWinner() const;
-    void incrementShip();
+    void setPlacementOver();
     void setDirection(Key);
     void setPosition(int, int);
     std::pair<int, int> getPosition() const;
