@@ -2,8 +2,9 @@
 
 using durationDBL = std::chrono::duration<double>; 
 
-Volleyball::Volleyball(std::ifstream &file) {
+Volleyball::Volleyball(std::ifstream &file, int player) {
 	std::string line;
+    this->player = player;
 
 	for (int i = 0; std::getline(file, line); ) {
         if (i == 5) {
@@ -44,8 +45,13 @@ void Volleyball::findQuestion() {
 
 void Volleyball::printQuestion() {
     int printCol = 40;
-    std::string playerStr = player == 1 ? "PLAYER1!!!" : "PLAYER 2!!!";
+    std::string playerStr = isPlaying == 1 ? "YOU" : "ENEMY";
+    
+    if (isPlaying) {
+        attrset(COLOR_PAIR(COLOR_PLAYER));
+    }
     mvaddstr(0, 45, playerStr.c_str());
+    attrset(COLOR_PAIR(COLOR_NORMAL));
     char output[200];
     sprintf(output,
         "Pick the correct question in - %f - or else...", timeLimit.count()
@@ -86,7 +92,7 @@ std::pair<bool, double> Volleyball::getResults() {
 }
 
 void Volleyball::showResults(std::pair<bool, double> &results) {
-    std::string faceEmoji = (results.first ? "correct :)" : "incorrect :(");
+    std::string faceEmoji = (results.first ? "correct :)" : "You lose. :(");
     char output[200];
     sprintf(output, 
         "You chose %s. The correct answer was %s",
@@ -100,15 +106,17 @@ void Volleyball::showResults(std::pair<bool, double> &results) {
     refresh();
 }
 
-std::pair<bool, double> Volleyball::playGame(int player, double timeLimit) {
-    this->player = player;
+std::pair<bool, double> Volleyball::playGame(double timeLimit, bool isPlaying) {
+    this->isPlaying = isPlaying;
     this->timeLimit = std::chrono::duration<double>(timeLimit);
-	std::srand(time(0));
     findQuestion();
-
     printQuestion();
-    std::pair<bool, double> results = getResults();
-    showResults(results);
-    std::this_thread::sleep_for(std::chrono::seconds(5));
-    return results;
+    refresh();
+    
+    if (isPlaying) {
+        std::pair<bool, double> results = getResults();
+        return results;
+    }
+    return {-1, -1};
 }
+

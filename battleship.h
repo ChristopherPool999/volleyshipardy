@@ -18,6 +18,7 @@
 #define COLOR_PLACE_SHIP_BAD 6
 #define COLOR_CURSOR 7
 #define COLOR_NORMAL 8
+#define COLOR_PLAYER 9
 
 #define PLAYER1 8
 #define PLAYER2 9
@@ -56,7 +57,7 @@ class Battleship {
     bool isPlaceable() const;
 public:
     Battleship(int);
-    void printUI() const;
+    void printUI(int) const;
     bool handleInput(char setInput = '\0');
     void handleMovement(Key);
     void handleDirection(Key);
@@ -67,9 +68,12 @@ public:
     void incrementShip();
     void setDirection(Key);
     void setPosition(int, int);
+    std::pair<int, int> getPosition() const;
     void setTile(char, int, int);
+    char getTile(int, int) const;
     void deincrementPiece();
 };
 
 #endif // BATTLESHIP_H
+
 

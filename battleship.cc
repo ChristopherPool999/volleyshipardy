@@ -16,14 +16,12 @@ int Battleship::getWinner() const {
     return (pieces == 0 ? 2 : 1);
 }
 
-
 void Battleship::incrementShip() {
     if (currentShip >= sizeof(shipSizes) / sizeof(int)) {
         throw std::runtime_error("ship is already at max size.\n");
     } 
     currentShip++;
 }
-
 
 void Battleship::setDirection(Key this_key) {
     if (this_key != UP || this_key != RIGHT || this_key != DOWN || direction != LEFT) {
@@ -32,12 +30,15 @@ void Battleship::setDirection(Key this_key) {
         direction = this_key;
 }
 
-
 void Battleship::setPosition(int row, int col) {
     if (row < 0 || col < 0 || row >= rowSize || col >= colSize) {
         throw std::runtime_error("position is out of map.\n");
     }
     cursorPostion = {col, row}; 
+}
+
+std::pair<int, int> Battleship::getPosition() const {
+    return {cursorPostion.first, cursorPostion.second};
 }
 
 void Battleship::deincrementPiece() {
@@ -46,8 +47,11 @@ void Battleship::deincrementPiece() {
 
 
 void Battleship::setTile(char val, int row, int col) {
-    gridMap tile  = static_cast<gridMap>(val);
-    grid[row][col] = tile;
+    grid[row][col] = static_cast<gridMap>(val);
+}
+
+char Battleship::getTile(int row, int col) const {
+    return static_cast<char>(grid[row][col]);    
 }
 
 bool Battleship::inPlacementRange(int col, int row) const {
@@ -177,7 +181,7 @@ bool Battleship::handleInput(char setInput) {
 
 #define space_between_boards 11
 
-void Battleship::printUI() const {
+void Battleship::printUI(int playerPrinting) const {
     mvaddstr(0, 3, "PLAYER 1");
     mvaddstr(0, 24, "PLAYER 2");  
     mvaddstr(1, 0, "__________________________________");
@@ -200,17 +204,10 @@ void Battleship::printUI() const {
     for (int i = 0; i < rowSize; i++) {
         for (int j = 0; j < colSize; j++) {
             int playerGrid = (player == 1 ? 2 + j : 2 + j + 21);
-            if (grid[i][j] == MAP_SHIP && isPlacementOver()) { // hide ships after placement 
-                attrset(COLOR_PAIR(
-                    (i == cursorPostion.second && j == cursorPostion.first) ? COLOR_CURSOR : COLOR_WATER)
-                );
-                mvaddch(4 + i, playerGrid, MAP_WATER);         
-                continue;
-            }
-            if (j == cursorPostion.first && i == cursorPostion.second && isPlacementOver()) {
+            if (playerPrinting != player && j == cursorPostion.first && i == cursorPostion.second && isPlacementOver()) {
                 attrset(COLOR_PAIR(COLOR_CURSOR)); 
             }
-            else if (inPlacementRange(j, i)) { // shows area you would place tiles on
+            else if (playerPrinting == player && inPlacementRange(j, i) && !isPlacementOver()) { // shows area you would place tiles on
                 isPlaceable() ? attrset(COLOR_PAIR(COLOR_PLACE_SHIP_OK)) : attrset(COLOR_PAIR(COLOR_PLACE_SHIP_BAD));
                 mvaddch(4 + i, playerGrid, MAP_SHIP);         
                 continue;             
@@ -221,7 +218,12 @@ void Battleship::printUI() const {
                 attrset(COLOR_PAIR(COLOR_MISS));
             } else if (grid[i][j] == MAP_WATER) {
                 attrset(COLOR_PAIR(COLOR_WATER));
-            } else if (grid[i][j] == MAP_SHIP) {   
+            } else if (grid[i][j] == MAP_SHIP) {
+                if (playerPrinting != player) {
+                    attrset(COLOR_PAIR(COLOR_WATER));
+                    mvaddch(4 + i, playerGrid, MAP_WATER);
+                    continue;
+                }   
                 attrset(COLOR_PAIR(COLOR_SHIP));
             }
             mvaddch(4 + i, playerGrid, grid[i][j]);
@@ -229,3 +231,4 @@ void Battleship::printUI() const {
         attrset(COLOR_PAIR(COLOR_NORMAL));
     }
 }
+

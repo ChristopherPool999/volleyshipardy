@@ -11,20 +11,25 @@
 #include <algorithm>
 #include <bits/stdc++.h>
 
+#define COLOR_NORMAL 8
+#define COLOR_PLAYER 9
+
 class Volleyball {
     std::vector<std::vector<std::string>> questions;
 	std::set<int> used = {};
 	std::chrono::duration<double> timeLimit;
-    int player = 1;
+    int player;
+    bool isPlaying;
     int printRow = 0;
 	int questionNum = -1;
     std::string answer = "";
     void findQuestion();
     void printQuestion();
     std::pair<bool, double> getResults();
-    void showResults(std::pair<bool, double>&);
 public:
-    Volleyball(std::ifstream &);
-    std::pair<bool, double> playGame(int, double);
+    Volleyball(std::ifstream &, int);
+    std::pair<bool, double> playGame(double, bool isPlaying);
+    void showResults(std::pair<bool, double>&);
 };
 #endif // VOLLEYBALL_H 
+
